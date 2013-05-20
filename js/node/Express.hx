@@ -1,7 +1,7 @@
 package js.node;
 
 import js.node.Connect;
-import js.Node;
+import js.node.Http;
 import js.node.EveryAuth;
 
 /**
@@ -9,11 +9,11 @@ import js.node.EveryAuth;
  * @author sledorze
  */
 
-typedef ExpressHttpServerReq = { > NodeHttpServerReq,
+typedef ExpressHttpServerReq = { > HttpServerReq,
 	var session : Session;
 }
 
-typedef ExpressHttpServerResp = { > NodeHttpServerResp,
+typedef ExpressHttpServerResp = { > HttpServerResp,
 	function render(name : String, params : Dynamic) : Void;
 	function redirect(url : String) : Void;
   
@@ -29,8 +29,9 @@ typedef AddressAndPort = {
   port : Int
 }
 
-typedef ExpressServer = {
-	function use (?middlewareMountPoint :Dynamic, middleware :Dynamic) :ConnectServer;
+private extern class ExpressServer {
+	@:overload( function( middleware:Dynamic ) : ExpressServer {} )
+	function use (?middlewareMountPoint :Dynamic = null, middleware :Dynamic) : ExpressServer;
 	function get(path : String, f : ExpressHttpServerReq ->  ExpressHttpServerResp -> Void) : Void;
 	function post(path : String, f : ExpressHttpServerReq ->  ExpressHttpServerResp -> Void) : Void;
 
@@ -41,23 +42,25 @@ typedef ExpressServer = {
 }
 
 extern
-class Express {
+class Express 
+extends ExpressServer #if !haxe3,#end 
+implements npm.Package.Require<"express","latest"> {
 
-	public function createServer (a1 :Dynamic, ?a2 :Dynamic, ?a3 :Dynamic, ?a4 :Dynamic, ?a5 :Dynamic, ?a6 :Dynamic, ?a7 :Dynamic, ?a8 :Dynamic, ?a9 :Dynamic) :ExpressServer;
+	public function new() : Void;
+	//public inline static function __call__() : Express return untyped Express();
 
-	public function cookieParser() :MiddleWare;
-	public function bodyParser() :MiddleWare;
-	public function session(params :Dynamic) :Void;
-	public function router(routes :Dynamic->Void) :Void;
-	public function Static (path :String, ?options :Dynamic) :MiddleWare;
-	public function errorHandler (options :Dynamic) :MiddleWare;
+	//public function createServer (a1 :Dynamic, ?a2 :Dynamic, ?a3 :Dynamic, ?a4 :Dynamic, ?a5 :Dynamic, ?a6 :Dynamic, ?a7 :Dynamic, ?a8 :Dynamic, ?a9 :Dynamic) :ExpressServer;
 
-	public function logger() : MiddleWare;
-
-	inline public static function static_(exp : Express, path : String, ?option : Dynamic) : MiddleWare {
-		var x = exp;
-		var p = path;
-		var o = option;
-		return untyped __js__("x.static(p, o)");
+	public static function cookieParser() :MiddleWare;
+	public static function bodyParser() :MiddleWare;
+	public static function session(params :Dynamic) :Void;
+	public static function router(routes :Dynamic->Void) :Void;
+	public inline static function static_(path :String, ?options :Dynamic) :MiddleWare {
+		return untyped Express["static"](path,options);
 	}
+	public static function errorHandler (options :Dynamic) :MiddleWare;
+
+	public static function logger() : MiddleWare;
+
+
 }

@@ -6,32 +6,27 @@ import js.Node;
  * @author sledorze
  */
 
-@:native("FacebookClient")
 extern
-class FacebookClient {
+class FacebookClient implements npm.Package.RequireNamespace<"facebook-client","latest"> {
 	
 	public function getSessionByAccessToken(access_token : Dynamic) : (FacebookSession -> Void) -> Void;
 	
 	public function new():Void; 
-
-	private static function __init__() : Void untyped { 
-	  FacebookClient = Node.require('facebook-client').FacebookClient; 
-	}
 	
 }
 
-typedef FacebookSession = {
-	function graphCall(path : String, ?params : Dynamic, ?method : String) : Dynamic -> Void;
+extern class FacebookSession {
+	public function graphCall(path : String, ?params : Dynamic, ?method : String) : Dynamic -> Void;
 	
-	function restCall (method : String, ?params : Dynamic) : Dynamic -> Void;
+	public function restCall (method : String, ?params : Dynamic) : Dynamic -> Void;
 	
-	function getId() : Dynamic -> Void;
+	public function getId() : Dynamic -> Void;
 	
-	function isValid() : Bool -> Void;
+	public function isValid() : Bool -> Void;
 	
-	function getMeta() : Dynamic -> Void;
+	public function getMeta() : Dynamic -> Void;
 	
-	function retrieveAccessToken(code : String, redirect_uri : String) : Void -> Void;
+	public function retrieveAccessToken(code : String, redirect_uri : String) : Void -> Void;
 	
-	function injectAccessToken(access_token : String) : Void -> Void;
+	public function injectAccessToken(access_token : String) : Void -> Void;
 }
