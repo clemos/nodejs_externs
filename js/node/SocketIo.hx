@@ -50,7 +50,7 @@ class SocketNamespace {
   public function leave(room:String):Void;
 
   /*@:native("in")*/
-  public inline function in_(room:String):SocketNamespace return untyped this["in"](room)
+  public inline function in_(room:String):SocketNamespace return untyped this["in"](room);
   
 
   public function clients(room:String):Array<SocketNamespace>;
