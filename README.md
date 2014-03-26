@@ -1,3 +1,7 @@
+#### This repository is not maintained anymore. 
+#### For up-to-date and easy to use JS externs with NPM integration, and more, please see my other project [haxe-js-kit](http://github.com/clemos/haxe-js-kit)
+
+
 # Node.js externs for HaXe
 
 Repository for the [haxelib node_externs](http://lib.haxe.org/p/nodejs_externs)
